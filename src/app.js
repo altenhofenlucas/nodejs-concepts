@@ -15,7 +15,7 @@ app.get("/repositories", (request, response) => {
 });
 
 app.post("/repositories", (request, response) => {
-  const {title, url, techs} = request.body;
+  const { title, url, techs } = request.body;
 
   const newRepository = {
     id: uuid(),
@@ -31,7 +31,25 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const { id } = request.params;
+  const {title, url, techs} = request.body;
+
+  const repositoryIndex = repositories.findIndex( repo => repo.id === id);
+
+  const { likes } = repositories[repositoryIndex];
+
+  const updatedRepository = {
+    id,
+    url,
+    title,
+    techs,
+    likes,
+  }
+
+  repositories[repositoryIndex] = updatedRepository;
+
+  return response.status(200).json(repositories[repositoryIndex]);
+
 });
 
 app.delete("/repositories/:id", (request, response) => {
